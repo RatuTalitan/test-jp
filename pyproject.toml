@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cottonseed-oilcake-marketplace"
+version = "0.1.0"
+description = "Jan Purna (जन पूर्णा) - single-vendor cotton seed oil cake ordering marketplace delivered as a Telegram bot (v1)."
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = { text = "Proprietary" }
+
+# Runtime dependencies (pinned per design.md "Key Design Decisions").
+dependencies = [
+    # Telegram bot framework (async, webhook + long-polling, inline keyboards).
+    "python-telegram-bot>=21.0,<22.0",
+    # ORM + PostgreSQL driver (psycopg v3).
+    "SQLAlchemy>=2.0,<3.0",
+    "psycopg[binary]>=3.1,<4.0",
+    # Database migrations.
+    "alembic>=1.13,<2.0",
+]
+
+[project.optional-dependencies]
+# Test/dev tooling. Installed in CI and locally for the test harness.
+test = [
+    "pytest>=8.0,<9.0",
+    "pytest-asyncio>=0.23,<0.25",
+    "hypothesis>=6.100,<7.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# ---------------------------------------------------------------------------
+# pytest configuration
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+# asyncio support for python-telegram-bot handlers (Bot_Interface, Phase 19+).
+asyncio_mode = "auto"
+addopts = "-ra --strict-markers --strict-config"
+markers = [
+    "property: property-based (Hypothesis) tests of universal correctness invariants",
+    "integration: tests that exercise external resources (DB, object storage, Telegram)",
+    "smoke: fast operational/sanity checks that the harness and wiring are healthy",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 100

@@ -1,0 +1,753 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Set up the Python 3.11 project skeleton and test harness": [
+      {
+        "executionId": "b6a30c14-4a85-43a1-a9de-62d5f1871165",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781444693400
+      },
+      {
+        "executionId": "b6a30c14-4a85-43a1-a9de-62d5f1871165",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781444949309
+      }
+    ],
+    "1. Project scaffolding and tooling": [
+      {
+        "executionId": "b6a30c14-4a85-43a1-a9de-62d5f1871165",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781444949314
+      }
+    ],
+    "2.1 Implement environment-based configuration loader": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491548
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445501857
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445764216
+      }
+    ],
+    "2.3 Implement the centralized branding/strings module": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491553
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445502850
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445765429
+      }
+    ],
+    "2.4 Implement the centralized Message_Catalog (i18n) module": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491558
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445504425
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445767099
+      }
+    ],
+    "3.1 Create initial migration: meta, enums, users, categories, products": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491563
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445800581
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781446782591
+      }
+    ],
+    "3.2 Create migration: carts, cart_items, orders, order_items": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491568
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781446783775
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781447189831
+      }
+    ],
+    "3.3 Create migration: payments, audit_trail, notifications": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491572
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781447191358
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781447651516
+      }
+    ],
+    "3.5 Create migration: seller_settings single-row table": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491577
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781447653955
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781448022070
+      }
+    ],
+    "4.1 Implement domain entities and repository interfaces": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491582
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781448023031
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781448719920
+      }
+    ],
+    "4.2 Implement versioned serialization for all domain formats": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491587
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781448875119
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449178274
+      }
+    ],
+    "4.4 Implement the monetary rounding utility (Monetary_Rounding)": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491592
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781448024012
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781448873927
+      }
+    ],
+    "5. Checkpoint - persistence foundation": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491598
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449180200
+      }
+    ],
+    "6.1 Implement contact registration, identification, roles, offline flag, and language preference": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491603
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449205939
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449658231
+      }
+    ],
+    "7.1 Implement product create/update with validation": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491608
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449207520
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449660703
+      }
+    ],
+    "7.2 Implement category creation with case-insensitive uniqueness": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491613
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449208652
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449661477
+      }
+    ],
+    "7.3 Implement availability, browsing, and product detail": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491618
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449210153
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449662049
+      }
+    ],
+    "8.1 Implement cart add/change/remove/view with validation and totals": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491624
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449211145
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449663593
+      }
+    ],
+    "9. Checkpoint - catalog and cart": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491632
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449664216
+      }
+    ],
+    "10.1 Implement the guarded transition function and allowed-transition table": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491637
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449682629
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450338853
+      }
+    ],
+    "10.2 Implement order placement": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491643
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449683612
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450339860
+      }
+    ],
+    "11.1 Implement UPI presentation and UTR submission with uniqueness": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491648
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450341964
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451236404
+      }
+    ],
+    "11.2 Implement optional screenshot attachment to object storage": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491654
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450342952
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451238141
+      }
+    ],
+    "12.1 Implement atomic stock decrement at Payment Verified → Approved": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491659
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450344916
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451239331
+      }
+    ],
+    "12.2 Implement payment rejection and remaining fulfillment transitions": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491664
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450345987
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451240333
+      }
+    ],
+    "13.1 Implement fulfillability computation and stock-change recompute": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491670
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449685139
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450340785
+      }
+    ],
+    "14.1 Implement customer cancellation": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491675
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451243329
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452378123
+      }
+    ],
+    "14.2 Implement order status queries with privacy": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491680
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451244325
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452379072
+      }
+    ],
+    "15. Checkpoint - order lifecycle core": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491686
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452384588
+      }
+    ],
+    "16.1 Implement modification in pre-decrement states": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491691
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452392191
+      }
+    ],
+    "16.2 Implement approved-state modification with stock delta and audit entry": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491696
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452393272
+      }
+    ],
+    "17.1 Implement the offline approval edge and offline approval audit entry": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491701
+      }
+    ],
+    "18.1 Implement transactional notification enqueue": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491706
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450346922
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451241391
+      }
+    ],
+    "18.2 Implement the retry worker delivery loop": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491711
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450348250
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451242363
+      }
+    ],
+    "19.1 Implement the MessagingChannel abstraction and Telegram adapter": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491716
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451246176
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452380141
+      }
+    ],
+    "19.2 Implement the UpdateSource abstraction with authenticity verification": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491722
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451247271
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452381972
+      }
+    ],
+    "19.3 Implement the voice-message baseline handler": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491727
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451248267
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452383025
+      }
+    ],
+    "19.6 Implement modern Telegram presentation features in the Telegram adapter": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491732
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451249890
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452384084
+      }
+    ],
+    "20.1 Implement Seller-only entry points with require_admin and fulfillment highlighting": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491737
+      }
+    ],
+    "20.2 Implement Seller settings: pickup location and UPI details": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491747
+      },
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452394749
+      }
+    ],
+    "21. Checkpoint - services and interface complete": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491752
+      }
+    ],
+    "22.1 Implement the update router (one transaction per inbound update)": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491757
+      }
+    ],
+    "22.2 Implement the application entrypoint": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491762
+      }
+    ],
+    "23.1 Implement automated backup configuration and scheduling": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491767
+      }
+    ],
+    "23.2 Implement the restore-drill script with timing assertion": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491772
+      }
+    ],
+    "24. Final checkpoint - full suite green": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445491777
+      }
+    ],
+    "2. Configuration and secrets handling": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781445767104
+      }
+    ],
+    "3. Database schema and migrations": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781448022078
+      }
+    ],
+    "4. Domain models and versioned serialization": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449178279
+      }
+    ],
+    "6. Implement Auth_Service": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449658236
+      }
+    ],
+    "7. Implement Catalog_Service": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449662054
+      }
+    ],
+    "8. Implement Cart_Service": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781449663598
+      }
+    ],
+    "10. Implement Order_Service core and state machine": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450339865
+      }
+    ],
+    "13. Implement Fulfillability Engine": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781450340790
+      }
+    ],
+    "11. Implement Payment_Service": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451238146
+      }
+    ],
+    "12. Implement atomic approval stock decrement and concurrency safety": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451240338
+      }
+    ],
+    "18. Implement Notification_Service and retry worker": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781451242369
+      }
+    ],
+    "14. Implement order cancellation and status tracking": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452379078
+      }
+    ],
+    "19. Implement Bot_Interface: channel, update source, and voice baseline": [
+      {
+        "executionId": "922f3601-cdf5-4a29-aab8-e4f90af2f3eb",
+        "chatSessionId": "1e1c7e67-3cd7-4ae2-bee5-4d748d228a6a",
+        "timestamp": 1781452384089
+      }
+    ]
+  }
+}
