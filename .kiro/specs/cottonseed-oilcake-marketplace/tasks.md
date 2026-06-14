@@ -231,11 +231,11 @@ All services are written against in-memory or transactional-test repositories so
 - [x] 15. Checkpoint - order lifecycle core
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 16. Implement Seller order modification with stock-delta adjustment
-  - [-] 16.1 Implement modification in pre-decrement states
+- [x] 16. Implement Seller order modification with stock-delta adjustment
+  - [x] 16.1 Implement modification in pre-decrement states
     - `modify` (add/remove/change line) restricted to Pre_Fulfillment_State and to the Seller; validate resulting qty > 0 and ≥ MOQ; in PLACED/PAYMENT_PENDING/PAYMENT_SUBMITTED/PAYMENT_VERIFIED validate against current stock without decrementing; reject reducing to zero line items; newly added lines snapshot the Product's **current catalog price per Unit at modification time** while existing untouched lines keep their **original snapshot `unit_price`**; recompute each line amount from that line's snapshot `unit_price` and the order total via the shared `Monetary_Rounding` utility (task 4.4); leave state unchanged; not-found and authorization handling
     - _Requirements: 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.10, 15.11, 15.13, 15.14, 15.15, 15.16_
-  - [-] 16.2 Implement approved-state modification with stock delta and audit entry
+  - [x] 16.2 Implement approved-state modification with stock delta and audit entry
     - For APPROVED orders adjust product stock by exactly (old − new) under `FOR UPDATE` locking — return stock on reduce/remove, deduct on increase, reject increases beyond available stock with nothing changed; newly added lines snapshot the Product's current catalog price at modification time while existing untouched lines retain their original snapshot `unit_price`, and recalculation uses each line's snapshot `unit_price` via the `Monetary_Rounding` utility (task 4.4); append exactly one Audit_Trail entry and notify the customer
     - _Requirements: 15.7, 15.8, 15.9, 15.11, 15.12, 15.13, 15.14, 15.15, 15.16_
   - [ ]* 16.3 Write property test for modification authorization, state guard, minimum-line
@@ -252,8 +252,8 @@ All services are written against in-memory or transactional-test repositories so
     - Recalculation uses each line's snapshot `unit_price` (new lines snapshot current catalog price; untouched lines keep original) rounded via `Monetary_Rounding`
     - **Validates: Requirements 15.11, 15.14, 15.15, 15.16**
 
-- [ ] 17. Implement offline-payment path and audit trail
-  - [~] 17.1 Implement the offline approval edge and offline approval audit entry
+- [x] 17. Implement offline-payment path and audit trail
+  - [x] 17.1 Implement the offline approval edge and offline approval audit entry
     - Add the guarded PAYMENT_PENDING → PAYMENT_VERIFIED edge permitted iff the customer's `offline_payment_allowed` is true (no UTR required, never auto-approved); standard stock-guarded Payment Verified → Approved follows; flagged customers may still optionally submit a valid UTR; on approval with no recorded UTR append exactly one offline-exception Audit_Trail entry; non-flagged customers can never reach Approved without a UTR
     - _Requirements: 8.9, 17.4, 17.5, 17.6, 17.7, 17.8_
   - [ ]* 17.2 Write property test for offline orders never auto-approving
@@ -307,8 +307,8 @@ All services are written against in-memory or transactional-test repositories so
     - Keep all of these strictly as presentation-layer concerns inside the Telegram `MessagingChannel` adapter; domain services (Auth, Catalog, Cart, Order, Payment, Notification, Admin) stay channel-agnostic and never reference command menus, menu buttons, or keyboard types (per the design's "Modern Telegram Presentation" subsection)
     - _Requirements: 1.1, 1.4, 1.5, 18.3, 18.4, 18.8_
 
-- [ ] 20. Implement Admin_Console security gating and Seller screens
-  - [~] 20.1 Implement Seller-only entry points with require_admin and fulfillment highlighting
+- [x] 20. Implement Admin_Console security gating and Seller screens
+  - [x] 20.1 Implement Seller-only entry points with require_admin and fulfillment highlighting
     - Every Admin_Console entry point calls `Auth_Service.require_admin` first (reject non-Sellers with "Seller privileges required", no data change); wire catalog management, pending verifications, approvals, fulfillment transitions, modification, offline-flag toggle; render pending-verification and active-order lists with fulfillment-conflict flags + shortfalls that never block approval and offer modify/reject options
     - _Requirements: 1.7, 7.1, 10.6, 12.1, 15.3, 16.3, 16.4, 16.5, 16.6, 17.2_
   - [x] 20.2 Implement Seller settings: pickup location and UPI details
@@ -319,32 +319,32 @@ All services are written against in-memory or transactional-test repositories so
     - **Property 34: Seller settings round-trip, authorization, and validation**
     - **Validates: Requirements 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8**
 
-- [~] 21. Checkpoint - services and interface complete
+- [x] 21. Checkpoint - services and interface complete
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 22. Wiring and integration
-  - [~] 22.1 Implement the update router (one transaction per inbound update)
+- [x] 22. Wiring and integration
+  - [x] 22.1 Implement the update router (one transaction per inbound update)
     - Build the `ConversationHandler`/callback router that opens one DB transaction per inbound update, verifies authenticity, routes to the correct service, renders channel-agnostic results back as text + inline keyboard, and rolls back atomically on any error
     - _Requirements: 1.9, 12.3, 12.4, 12.6_
-  - [~] 22.2 Implement the application entrypoint
+  - [x] 22.2 Implement the application entrypoint
     - Wire config, repositories, all services, the notification retry worker, and `LongPollSource` into a single runnable process; expose a config switch for webhook mode with no data-format change
     - _Requirements: 13.1, 13.2, 13.8_
   - [ ]* 22.3 Write end-to-end integration tests
     - Telegram round-trip (contact sharing, button callbacks, file download, voice receipt) against a staging bot; object-storage upload/download + signed-URL retrieval; notification retry timing against a fake failing transport (≥30s spacing, ≤3 retries); two-worker webhook smoke against one DB with no schema change
     - _Requirements: 6.3, 11.3, 13.8, 14.1_
 
-- [ ] 23. Backup, restore, and durability verification (code/CI configurable)
-  - [~] 23.1 Implement automated backup configuration and scheduling
+- [x] 23. Backup, restore, and durability verification (code/CI configurable)
+  - [x] 23.1 Implement automated backup configuration and scheduling
     - Add backup configuration/scripts creating catalog/order/payment backups at ≤24h intervals with ≥30-day retention; alert the Seller on backup failure while preserving existing data
     - _Requirements: 13.4, 13.6_
-  - [~] 23.2 Implement the restore-drill script with timing assertion
+  - [x] 23.2 Implement the restore-drill script with timing assertion
     - Add a restore script/drill that restores from a retained backup and asserts completion under 60 minutes, alerting the Seller on restore failure while preserving stored data
     - _Requirements: 13.5, 13.6_
   - [ ]* 23.3 Write durability/retention and no-SMS smoke checks
     - Verify ≥365-day durable retention surviving single-node failure (PITR/replication config check) and assert messaging is Telegram-only with no SMS provider wired
     - _Requirements: 13.1, 13.2, 13.3_
 
-- [~] 24. Final checkpoint - full suite green
+- [x] 24. Final checkpoint - full suite green
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
