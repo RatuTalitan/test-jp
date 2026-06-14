@@ -1,0 +1,43 @@
+# Jan Purna (जन पूर्णा) – Automated database backup schedule
+#
+# Run the backup script every 12 hours (satisfies Req 13.4: backups at
+# intervals of no more than 24 hours).
+#
+# How to install:
+#   crontab -e
+#   Paste the line below, adjusting /app and /var/log/backup.log as needed.
+#
+# Required environment variables (set in the deployment environment or export
+# them in a wrapper script sourced by cron):
+#   DB_URL            – database connection URL
+#   BACKUP_DIR        – directory for backup files (default: ./backups/)
+#   BACKUP_RETENTION_DAYS – days to retain backups (default: 30)
+#
+# The script exits non-zero on failure so cron can detect and report errors
+# via MAILTO (set MAILTO=operator@example.com above the cron line).
+#
+# Systemd timer alternative (place in /etc/systemd/system/):
+#   [Unit]
+#   Description=Jan Purna database backup
+#
+#   [Timer]
+#   OnCalendar=*-*-* 00,12:00:00
+#   Persistent=true
+#
+#   [Install]
+#   WantedBy=timers.target
+#
+# And the corresponding service unit:
+#   [Unit]
+#   Description=Jan Purna database backup service
+#
+#   [Service]
+#   Type=oneshot
+#   WorkingDirectory=/app
+#   EnvironmentFile=/app/.env
+#   ExecStart=/app/.venv/bin/python -m scripts.backup
+#   StandardOutput=append:/var/log/backup.log
+#   StandardError=append:/var/log/backup.log
+
+# Run every 12 hours (at midnight and noon UTC).
+0 */12 * * * cd /app && python -m scripts.backup >> /var/log/backup.log 2>&1
