@@ -303,6 +303,342 @@ _CATALOG: Dict[str, Dict[Language, str]] = {
         Language.HINDI: "विक्रेता सेटिंग्स",
         Language.ENGLISH: "Seller settings",
     },
+
+    # -----------------------------------------------------------------------
+    # Task 22.1 — Router additions (additive, format_version unchanged)
+    # -----------------------------------------------------------------------
+
+    # Onboarding / auth
+    "CONTACT_SHARED_OK": {
+        Language.HINDI: "धन्यवाद! आपकी पहचान सत्यापित हो गई। आगे बढ़ें।",
+        Language.ENGLISH: "Thank you! Your identity has been verified. You can now proceed.",
+    },
+    "CONTACT_REQUIRED": {
+        Language.HINDI: "ऑर्डर देने के लिए संपर्क साझा करना आवश्यक है।",
+        Language.ENGLISH: "Sharing your contact is required to place orders.",
+    },
+    "AUTH_REQUIRED": {
+        Language.HINDI: "कृपया पहले अपना संपर्क साझा करें।",
+        Language.ENGLISH: "Please share your contact first.",
+    },
+
+    # Browse / catalog
+    "BROWSE_INTRO": {
+        Language.HINDI: "श्रेणी चुनें:",
+        Language.ENGLISH: "Choose a category:",
+    },
+    "NO_CATEGORIES": {
+        Language.HINDI: "अभी कोई श्रेणी उपलब्ध नहीं है।",
+        Language.ENGLISH: "No categories are available right now.",
+    },
+    "CATEGORY_PRODUCTS_INTRO": {
+        Language.HINDI: "{category} — उत्पाद:",
+        Language.ENGLISH: "{category} — Products:",
+    },
+    "PRODUCT_DETAIL_INTRO": {
+        Language.HINDI: "📦 {name}\nश्रेणी: {category}\nमूल्य: ₹{price} प्रति {unit}\nन्यूनतम मात्रा: {moq} {unit}\n{stock_status}\n\n{description}",
+        Language.ENGLISH: "📦 {name}\nCategory: {category}\nPrice: ₹{price} per {unit}\nMin. qty: {moq} {unit}\n{stock_status}\n\n{description}",
+    },
+    "IN_STOCK_LABEL": {
+        Language.HINDI: "✅ स्टॉक में उपलब्ध",
+        Language.ENGLISH: "✅ In stock",
+    },
+    "OUT_OF_STOCK_LABEL": {
+        Language.HINDI: "❌ स्टॉक खत्म",
+        Language.ENGLISH: "❌ Out of stock",
+    },
+    "PRODUCT_NOT_FOUND": {
+        Language.HINDI: "यह उत्पाद नहीं मिला।",
+        Language.ENGLISH: "This product was not found.",
+    },
+    "BTN_ADD_TO_CART": {
+        Language.HINDI: "टोकरी में डालें",
+        Language.ENGLISH: "Add to cart",
+    },
+    "BTN_BACK_TO_CATEGORIES": {
+        Language.HINDI: "← श्रेणियाँ",
+        Language.ENGLISH: "← Categories",
+    },
+    "BTN_BACK_TO_PRODUCTS": {
+        Language.HINDI: "← उत्पाद",
+        Language.ENGLISH: "← Products",
+    },
+
+    # Cart
+    "ENTER_QUANTITY_PROMPT": {
+        Language.HINDI: "{name} के लिए मात्रा दर्ज करें ({unit} में, न्यूनतम: {moq}):",
+        Language.ENGLISH: "Enter quantity for {name} (in {unit}, minimum: {moq}):",
+    },
+    "QTY_PRESET_MOQ": {
+        Language.HINDI: "न्यूनतम ({moq} {unit})",
+        Language.ENGLISH: "Min ({moq} {unit})",
+    },
+    "QTY_PRESET_DOUBLE_MOQ": {
+        Language.HINDI: "दोगुना ({qty} {unit})",
+        Language.ENGLISH: "Double ({qty} {unit})",
+    },
+    "QTY_INVALID": {
+        Language.HINDI: "कृपया एक वैध संख्या दर्ज करें।",
+        Language.ENGLISH: "Please enter a valid number.",
+    },
+    "ADDED_TO_CART": {
+        Language.HINDI: "{name} टोकरी में जोड़ दिया गया।",
+        Language.ENGLISH: "{name} has been added to your cart.",
+    },
+    "REMOVE_FROM_CART_FAILED": {
+        Language.HINDI: "टोकरी से हटाने में समस्या हुई।",
+        Language.ENGLISH: "Could not remove from cart.",
+    },
+    "CART_CLEARED": {
+        Language.HINDI: "टोकरी खाली कर दी गई।",
+        Language.ENGLISH: "Your cart has been cleared.",
+    },
+    "CART_CONTENTS": {
+        Language.HINDI: "🛒 आपकी टोकरी:\n\n{lines}\n\nकुल: ₹{total}",
+        Language.ENGLISH: "🛒 Your cart:\n\n{lines}\n\nTotal: ₹{total}",
+    },
+    "CART_LINE": {
+        Language.HINDI: "• {name}: {qty} {unit} × ₹{price} = ₹{total}",
+        Language.ENGLISH: "• {name}: {qty} {unit} × ₹{price} = ₹{total}",
+    },
+    "BTN_REMOVE_ITEM": {
+        Language.HINDI: "हटाएं: {name}",
+        Language.ENGLISH: "Remove: {name}",
+    },
+    "BTN_CLEAR_CART": {
+        Language.HINDI: "टोकरी खाली करें",
+        Language.ENGLISH: "Clear cart",
+    },
+
+    # Checkout / payment
+    "ORDER_PLACED_DETAIL": {
+        Language.HINDI: "✅ ऑर्डर #{order_number} दर्ज हुआ। कुल: ₹{total}",
+        Language.ENGLISH: "✅ Order #{order_number} placed. Total: ₹{total}",
+    },
+    "PAYMENT_INSTRUCTIONS": {
+        Language.HINDI: "💳 भुगतान विवरण:\nUPI: {upi_address}\nकुल देय: ₹{amount}\n\nभुगतान के बाद UTR नंबर दर्ज करें।",
+        Language.ENGLISH: "💳 Payment details:\nUPI: {upi_address}\nAmount due: ₹{amount}\n\nAfter payment, enter your UTR number.",
+    },
+    "ENTER_UTR_PROMPT": {
+        Language.HINDI: "अपना UTR नंबर दर्ज करें (12 अक्षर/अंक):",
+        Language.ENGLISH: "Enter your UTR number (12 alphanumeric characters):",
+    },
+    "UTR_SUBMITTED_OK": {
+        Language.HINDI: "✅ UTR प्राप्त हुआ। विक्रेता सत्यापित करेगा।",
+        Language.ENGLISH: "✅ UTR received. The seller will verify your payment.",
+    },
+    "BTN_SUBMIT_PAYMENT": {
+        Language.HINDI: "UTR दर्ज करें",
+        Language.ENGLISH: "Enter UTR",
+    },
+    "CHECKOUT_CANCELLED": {
+        Language.HINDI: "भुगतान रद्द किया गया।",
+        Language.ENGLISH: "Payment entry cancelled.",
+    },
+    "UPI_NOT_CONFIGURED_MSG": {
+        Language.HINDI: "विक्रेता ने अभी UPI विवरण सेट नहीं किया है।",
+        Language.ENGLISH: "The seller has not configured UPI details yet.",
+    },
+
+    # Orders / history
+    "NO_ORDERS_MSG": {
+        Language.HINDI: "आपका कोई ऑर्डर नहीं है।",
+        Language.ENGLISH: "You have no orders.",
+    },
+    "ORDERS_LIST_INTRO": {
+        Language.HINDI: "📋 आपके ऑर्डर:",
+        Language.ENGLISH: "📋 Your orders:",
+    },
+    "ORDER_BUTTON_LABEL": {
+        Language.HINDI: "#{number} — {state} — ₹{total}",
+        Language.ENGLISH: "#{number} — {state} — ₹{total}",
+    },
+    "ORDER_DETAIL": {
+        Language.HINDI: "📋 ऑर्डर #{number}\nस्थिति: {state}\nकुल: ₹{total}\nभुगतान संदर्भ: {payment_ref}\n\nआइटम:\n{lines}",
+        Language.ENGLISH: "📋 Order #{number}\nStatus: {state}\nTotal: ₹{total}\nPayment ref: {payment_ref}\n\nItems:\n{lines}",
+    },
+    "PAYMENT_REF_NOT_PROVIDED": {
+        Language.HINDI: "अभी तक दर्ज नहीं",
+        Language.ENGLISH: "Not yet provided",
+    },
+    "ORDER_NOT_YOURS_MSG": {
+        Language.HINDI: "यह ऑर्डर उपलब्ध नहीं है।",
+        Language.ENGLISH: "This order is not available.",
+    },
+
+    # Cancel
+    "CANCEL_CONFIRM_PROMPT": {
+        Language.HINDI: "क्या आप ऑर्डर #{number} रद्द करना चाहते हैं?",
+        Language.ENGLISH: "Do you want to cancel order #{number}?",
+    },
+    "CANCEL_ABORTED": {
+        Language.HINDI: "रद्द करना छोड़ दिया गया।",
+        Language.ENGLISH: "Cancellation aborted.",
+    },
+    "CANCEL_NOT_ALLOWED": {
+        Language.HINDI: "यह ऑर्डर अब रद्द नहीं किया जा सकता।",
+        Language.ENGLISH: "This order can no longer be cancelled.",
+    },
+    "BTN_YES_CANCEL": {
+        Language.HINDI: "हाँ, रद्द करें",
+        Language.ENGLISH: "Yes, cancel",
+    },
+    "BTN_NO_KEEP": {
+        Language.HINDI: "नहीं, रखें",
+        Language.ENGLISH: "No, keep it",
+    },
+    "CANCEL_ORDER_PROMPT": {
+        Language.HINDI: "कौन सा ऑर्डर रद्द करना है? नीचे ऑर्डर देखें।",
+        Language.ENGLISH: "Which order to cancel? See your orders below.",
+    },
+
+    # Admin — verify
+    "ADMIN_NO_PENDING": {
+        Language.HINDI: "कोई भुगतान सत्यापन बाकी नहीं है।",
+        Language.ENGLISH: "No pending payment verifications.",
+    },
+    "ADMIN_VERIFY_INTRO": {
+        Language.HINDI: "💳 भुगतान सत्यापन:",
+        Language.ENGLISH: "💳 Pending verifications:",
+    },
+    "ADMIN_ORDER_VERIFY_LINE": {
+        Language.HINDI: "ऑर्डर #{number} — ₹{total} — UTR: {utr}{flag}",
+        Language.ENGLISH: "Order #{number} — ₹{total} — UTR: {utr}{flag}",
+    },
+    "ADMIN_STOCK_FLAG": {
+        Language.HINDI: " ⚠️ स्टॉक समस्या",
+        Language.ENGLISH: " ⚠️ Stock issue",
+    },
+    "BTN_APPROVE": {
+        Language.HINDI: "✅ स्वीकृत करें #{number}",
+        Language.ENGLISH: "✅ Approve #{number}",
+    },
+    "BTN_REJECT": {
+        Language.HINDI: "❌ अस्वीकृत करें #{number}",
+        Language.ENGLISH: "❌ Reject #{number}",
+    },
+    "APPROVE_SUCCESS": {
+        Language.HINDI: "ऑर्डर #{number} स्वीकृत हो गया।",
+        Language.ENGLISH: "Order #{number} has been approved.",
+    },
+    "APPROVE_FAILED": {
+        Language.HINDI: "स्वीकृति में समस्या: {reason}",
+        Language.ENGLISH: "Approval failed: {reason}",
+    },
+    "REJECT_REASON_PROMPT": {
+        Language.HINDI: "अस्वीकृति का कारण दर्ज करें (1-500 अक्षर):",
+        Language.ENGLISH: "Enter rejection reason (1-500 characters):",
+    },
+    "REJECT_SUCCESS": {
+        Language.HINDI: "ऑर्डर अस्वीकृत कर दिया गया।",
+        Language.ENGLISH: "Order has been rejected.",
+    },
+    "REJECT_FAILED": {
+        Language.HINDI: "अस्वीकृति में समस्या: {reason}",
+        Language.ENGLISH: "Rejection failed: {reason}",
+    },
+
+    # Admin — active orders
+    "ADMIN_NO_ACTIVE": {
+        Language.HINDI: "कोई सक्रिय ऑर्डर नहीं है।",
+        Language.ENGLISH: "No active orders.",
+    },
+    "ADMIN_ACTIVE_INTRO": {
+        Language.HINDI: "📋 सक्रिय ऑर्डर:",
+        Language.ENGLISH: "📋 Active orders:",
+    },
+    "BTN_MARK_READY": {
+        Language.HINDI: "📦 तैयार करें #{number}",
+        Language.ENGLISH: "📦 Mark ready #{number}",
+    },
+    "BTN_MARK_COLLECTED": {
+        Language.HINDI: "✅ पिकअप हुआ #{number}",
+        Language.ENGLISH: "✅ Mark collected #{number}",
+    },
+    "BTN_OFFLINE_APPROVE": {
+        Language.HINDI: "💰 ऑफलाइन स्वीकृत #{number}",
+        Language.ENGLISH: "💰 Offline approve #{number}",
+    },
+    "MARK_READY_SUCCESS": {
+        Language.HINDI: "ऑर्डर #{number} पिकअप के लिए तैयार कर दिया गया।",
+        Language.ENGLISH: "Order #{number} marked as ready for pickup.",
+    },
+    "MARK_READY_NO_PICKUP": {
+        Language.HINDI: "ऑर्डर तैयार हो गया। ⚠️ पिकअप स्थान सेट नहीं है।",
+        Language.ENGLISH: "Order marked ready. ⚠️ No pickup location is set.",
+    },
+    "MARK_COLLECTED_SUCCESS": {
+        Language.HINDI: "ऑर्डर #{number} पूरा हो गया।",
+        Language.ENGLISH: "Order #{number} has been completed.",
+    },
+    "TRANSITION_FAILED": {
+        Language.HINDI: "कार्य नहीं हो सका: {reason}",
+        Language.ENGLISH: "Action failed: {reason}",
+    },
+
+    # Admin — settings
+    "ADMIN_SETTINGS_INTRO": {
+        Language.HINDI: "⚙️ विक्रेता सेटिंग्स:",
+        Language.ENGLISH: "⚙️ Seller settings:",
+    },
+    "BTN_SET_PICKUP": {
+        Language.HINDI: "📍 पिकअप स्थान सेट करें",
+        Language.ENGLISH: "📍 Set pickup location",
+    },
+    "BTN_SET_UPI_ADDR": {
+        Language.HINDI: "💳 UPI पता सेट करें",
+        Language.ENGLISH: "💳 Set UPI address",
+    },
+    "PICKUP_PROMPT": {
+        Language.HINDI: "पिकअप स्थान का विवरण दर्ज करें (1-500 अक्षर):",
+        Language.ENGLISH: "Enter the pickup location description (1-500 characters):",
+    },
+    "PICKUP_SET_SUCCESS": {
+        Language.HINDI: "✅ पिकअप स्थान सेट हो गया।",
+        Language.ENGLISH: "✅ Pickup location has been set.",
+    },
+    "PICKUP_SET_FAILED": {
+        Language.HINDI: "पिकअप स्थान सेट करने में समस्या।",
+        Language.ENGLISH: "Could not set the pickup location.",
+    },
+    "UPI_ADDR_PROMPT": {
+        Language.HINDI: "UPI पता दर्ज करें (जैसे: name@bank):",
+        Language.ENGLISH: "Enter the UPI address (e.g. name@bank):",
+    },
+    "UPI_ADDR_SET_SUCCESS": {
+        Language.HINDI: "✅ UPI पता सेट हो गया।",
+        Language.ENGLISH: "✅ UPI address has been set.",
+    },
+    "UPI_ADDR_SET_FAILED": {
+        Language.HINDI: "UPI पता सेट करने में समस्या।",
+        Language.ENGLISH: "Could not set the UPI address.",
+    },
+    "ADMIN_INPUT_CANCELLED": {
+        Language.HINDI: "इनपुट रद्द किया गया।",
+        Language.ENGLISH: "Input cancelled.",
+    },
+
+    # General
+    "UNKNOWN_INPUT": {
+        Language.HINDI: "मैं समझ नहीं सका। नीचे दिए विकल्पों में से चुनें।",
+        Language.ENGLISH: "I didn't understand that. Please use the options below.",
+    },
+    "MAIN_MENU_PROMPT": {
+        Language.HINDI: "मुख्य मेनू:",
+        Language.ENGLISH: "Main menu:",
+    },
+    "SELLER_REQUIRED": {
+        Language.HINDI: "यह कार्य केवल विक्रेता के लिए है।",
+        Language.ENGLISH: "This action requires Seller privileges.",
+    },
+    "OFFLINE_APPROVE_SUCCESS": {
+        Language.HINDI: "ऑफलाइन भुगतान स्वीकृत हो गया।",
+        Language.ENGLISH: "Offline payment approved.",
+    },
+    "OFFLINE_APPROVE_FAILED": {
+        Language.HINDI: "ऑफलाइन स्वीकृति नहीं हो सकी: {reason}",
+        Language.ENGLISH: "Offline approval failed: {reason}",
+    },
 }
 
 

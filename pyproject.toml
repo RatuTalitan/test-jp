@@ -38,7 +38,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["src", "."]
 # asyncio support for python-telegram-bot handlers (Bot_Interface, Phase 19+).
 asyncio_mode = "auto"
 addopts = "-ra --strict-markers --strict-config"

@@ -1,4 +1,4 @@
-"""Admin_Console: Seller settings (pickup location + UPI details) (task 20.2).
+"""Admin_Console: Seller entry points for settings, verifications, and active-order screens.
 
 This is the channel- and DB-agnostic **Admin_Console** described in design.md ->
 ``Admin_Console``. Like the other domain services it reaches persistence **only**
@@ -23,26 +23,36 @@ Scope of task 20.2 (design.md -> Admin_Console; Req 19):
 * ``mark_ready(order_id, acting_user)`` -- a thin, non-blocking wrapper over
   :meth:`marketplace.order.service.OrderService.mark_ready` that, when no
   Pickup_Location is configured, attaches a **warning** flag while still
-  performing the APPROVED -> READY_FOR_PICKUP transition (Req 19.9).
+  performing the APPROVED -> READY_FOR_PICKUP transition (Req 19.9). Also
+  attaches a fulfillability shortfall summary to the result for informational
+  purposes (never blocks the transition, Req 16.5).
+
+Scope of task 20.1 (design.md -> Admin_Console; Req 7.1, 10.6, 16.3-16.5, 17.2):
+
+* ``list_pending_verifications(acting_user)`` -- Seller-only; lists every Order in
+  the PAYMENT_SUBMITTED state with its UTR, total amount, any screenshot key, and
+  a fulfillability flag (Req 7.1, 16.3/16.4). The flag NEVER blocks approval
+  (Req 16.5).
+* ``list_active_orders(acting_user)`` -- Seller-only; lists all non-terminal
+  orders (delegates to OrderService.list_active_for_seller()) enriched with the
+  same fulfillability data (Req 10.6, 16.3/16.4/16.5).
+* ``set_offline_payment_allowed(target_customer_ref, enabled, acting_user)`` --
+  Seller-only; delegates to Auth_Service.set_offline_payment_allowed (Req 17.2).
 
 Security: every entry point first calls ``Auth_Service.require_admin`` (Req 1.7,
-12.1, 19.8); a non-Seller is rejected with
-:class:`~marketplace.domain.results.NotAuthorized` and the current settings are
-left unchanged. Following the "stable status codes, never localized prose" rule,
-validation refusals are returned as typed :class:`~marketplace.domain.results.Rejected`
+12.1, 17.2, 19.8); a non-Seller is rejected with
+:class:`~marketplace.domain.results.NotAuthorized` and no data is changed.
+Following the "stable status codes, never localized prose" rule, validation
+refusals are returned as typed :class:`~marketplace.domain.results.Rejected`
 results carrying a **stable code** plus structured ``details`` the Bot_Interface
 maps to a localized Message_Catalog template (Req 18).
-
-The ``Payment_Service.present_instructions`` flow (task 11.1) already reads the
-**current** ``seller_settings`` row, so an updated ``upi_address`` /
-``upi_qr_object_key`` written here flows through to the customer's payment
-instructions with no extra wiring (Req 19.7).
 
 Clean importable API::
 
     from marketplace.admin import (
         AdminConsole,
         ReadyResult,
+        SellerOrderView,
         PICKUP_LOCATION_INVALID,
         INVALID_VPA,
         UNSUPPORTED_QR_FORMAT,
@@ -52,19 +62,26 @@ Clean importable API::
         MAX_QR_IMAGE_BYTES,
     )
 
-Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8, 19.9.
+Requirements: 7.1, 10.6, 12.1, 16.3, 16.4, 16.5, 17.2,
+              19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8, 19.9.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Optional, Union
 
 from marketplace.auth.service import AuthService
-from marketplace.domain.entities import SellerSettings, User, new_id
+from marketplace.domain.entities import Order, OrderState, SellerSettings, User, new_id
 from marketplace.domain.repositories import UnitOfWork
-from marketplace.domain.results import Failure, NotAuthorized, Rejected
+from marketplace.domain.results import Failure, NotAuthorized, NotFound, Rejected
+from marketplace.fulfillability.engine import (
+    Shortfall,
+    _stock_snapshot_for_order,
+    is_fulfillable,
+    shortfalls as _compute_shortfalls,
+)
 from marketplace.order.service import OrderService
 from marketplace.order.state_machine import Actor
 from marketplace.payment.object_store import ObjectStore
@@ -72,6 +89,7 @@ from marketplace.payment.object_store import ObjectStore
 __all__ = [
     "AdminConsole",
     "ReadyResult",
+    "SellerOrderView",
     # stable status codes
     "PICKUP_LOCATION_INVALID",
     "INVALID_VPA",
@@ -84,6 +102,7 @@ __all__ = [
     "MAX_QR_IMAGE_BYTES",
     # result aliases
     "SettingsResult",
+    "OfflinePaymentResult",
 ]
 
 # --- Stable status codes (language-agnostic; localized by the Bot_Interface) --
@@ -125,6 +144,41 @@ MAX_QR_IMAGE_BYTES: int = 10 * 1024 * 1024
 #: A settings mutation returns the updated row or a typed failure.
 SettingsResult = Union[SellerSettings, Rejected, NotAuthorized]
 
+#: ``set_offline_payment_allowed`` delegates to Auth_Service and returns the
+#: updated :class:`User`, or a ``NotFound`` / ``NotAuthorized`` on failure (Req 17.2).
+OfflinePaymentResult = Union[User, NotFound, NotAuthorized]
+
+
+@dataclass(frozen=True)
+class SellerOrderView:
+    """A Seller-facing snapshot of one Order with payment details and fulfillability.
+
+    Returned by :meth:`AdminConsole.list_pending_verifications` and
+    :meth:`AdminConsole.list_active_orders`. Each entry bundles:
+
+    * ``order`` -- the full :class:`~marketplace.domain.entities.Order` entity
+      (line items, state, total, timestamps).
+    * ``utr`` -- the UTR recorded against this order's payment (``None`` when
+      no payment has been submitted yet, e.g. for PLACED/PAYMENT_PENDING orders
+      in the active-orders list).
+    * ``screenshot_key`` -- the object-storage key for any attached payment
+      screenshot (``None`` if none uploaded).
+    * ``fulfillable`` -- ``True`` iff every line item's ordered quantity is
+      ``<=`` the corresponding Product's current stock quantity (Req 16.2).
+      The flag is **informational only** and NEVER blocks the Seller from
+      approving or acting on the order (Req 16.5).
+    * ``shortfalls`` -- a tuple of :class:`~marketplace.fulfillability.engine.Shortfall`
+      entries for every line that cannot be met from current stock (empty when
+      ``fulfillable`` is ``True``).  Carries enough detail for the Bot_Interface
+      to render the per-line shortfall identified in Req 16.3.
+    """
+
+    order: object  # Order entity
+    utr: Optional[str]
+    screenshot_key: Optional[str]
+    fulfillable: bool
+    shortfalls: tuple = ()
+
 
 @dataclass(frozen=True)
 class ReadyResult:
@@ -137,11 +191,20 @@ class ReadyResult:
     transition still happened, so the warning never hard-blocks the action. When
     a Pickup_Location is set, ``pickup_location_warning`` is ``False`` and
     ``warning_code`` is ``None``.
+
+    Additionally carries a fulfillability snapshot computed at mark-ready time
+    (optional enhancement, Req 16.3/16.5). ``fulfillable`` and
+    ``fulfillability_shortfalls`` are informational only -- they NEVER block the
+    Seller from marking an order ready (Req 16.5).
     """
 
     order: object
     pickup_location_warning: bool = False
     warning_code: Optional[str] = None
+    #: ``True`` iff every line can be met from current stock at mark-ready time.
+    fulfillable: bool = True
+    #: Non-empty when at least one line's ordered qty exceeds current stock.
+    fulfillability_shortfalls: tuple = ()
 
 
 #: ``mark_ready`` returns the ``ReadyResult`` on a successful transition, or the
@@ -320,6 +383,11 @@ class AdminConsole:
         transition still happened, so the warning never hard-blocks the action
         (Req 19.9). A state-preserving failure from the state machine (wrong
         state/actor, not found) is returned unchanged.
+
+        Additionally attaches a fulfillability shortfall summary to the
+        :class:`ReadyResult` (informational; never blocks the action, Req 16.5).
+        The snapshot is computed from the current catalog after the transition so
+        the Seller has an up-to-date view of whether the stock is still present.
         """
         gate = self._require_admin(acting_user)
         if gate is not None:
@@ -331,10 +399,14 @@ class AdminConsole:
 
         # A failure (wrong state/actor/not found) leaves the order unchanged;
         # surface it as-is (no warning is attached to a non-transition).
-        from marketplace.domain.entities import Order  # local import avoids cycle
-
         if not isinstance(result, Order):
             return result
+
+        # Compute fulfillability snapshot at mark-ready time (Req 16.3/16.5):
+        # informational only, never blocks the transition.
+        snapshot = _stock_snapshot_for_order(self._uow, result)
+        fulfillable = is_fulfillable(result, snapshot)
+        shortfall_list = tuple(_compute_shortfalls(result, snapshot))
 
         settings = self._uow.seller_settings.get()
         pickup_unset = settings is None or not settings.pickup_location
@@ -343,10 +415,125 @@ class AdminConsole:
                 order=result,
                 pickup_location_warning=True,
                 warning_code=PICKUP_LOCATION_NOT_SET,
+                fulfillable=fulfillable,
+                fulfillability_shortfalls=shortfall_list,
             )
-        return ReadyResult(order=result, pickup_location_warning=False)
+        return ReadyResult(
+            order=result,
+            pickup_location_warning=False,
+            fulfillable=fulfillable,
+            fulfillability_shortfalls=shortfall_list,
+        )
+
+    # ----------------------------------------- list_pending_verifications
+    def list_pending_verifications(self, acting_user) -> Union[list, NotAuthorized]:
+        """List every PAYMENT_SUBMITTED order with payment details and fulfillability (Req 7.1, 16.3, 16.4).
+
+        Gating first (Req 12.1): a non-Seller is rejected with
+        :class:`~marketplace.domain.results.NotAuthorized` and no data is read.
+        On success returns a list of :class:`SellerOrderView` entries, one per
+        order in the PAYMENT_SUBMITTED state, each enriched with:
+
+        * the order's UTR and any payment screenshot key (read from the
+          ``payments`` repository per order, Req 7.1);
+        * a ``fulfillable`` flag and per-line ``shortfalls`` computed from the
+          **current** catalog stock (Req 16.3/16.4).
+
+        The flag is **informational only** -- it NEVER blocks the Seller from
+        approving an order (Req 16.5). The approval-time stock check in
+        :meth:`marketplace.order.service.OrderService.approve` (Req 7.3/7.4)
+        governs the actual stock decrement and prevents overselling.
+        """
+        gate = self._require_admin(acting_user)
+        if gate is not None:
+            return gate
+
+        orders = self._uow.orders.list_by_states([OrderState.PAYMENT_SUBMITTED])
+        return [self._build_seller_order_view(order) for order in orders]
+
+    # --------------------------------------------------- list_active_orders
+    def list_active_orders(self, acting_user) -> Union[list, NotAuthorized]:
+        """List all non-terminal orders enriched with fulfillability data (Req 10.6, 16.3-16.5).
+
+        Gating first (Req 12.1): a non-Seller is rejected with
+        :class:`~marketplace.domain.results.NotAuthorized` and no data is read.
+        On success delegates to
+        :meth:`marketplace.order.service.OrderService.list_active_for_seller`
+        (which returns non-terminal orders oldest-first, Req 10.6) and enriches
+        each order with the same :class:`SellerOrderView` shape as
+        :meth:`list_pending_verifications` (Req 16.3/16.4). The fulfillability
+        flag NEVER blocks any Seller action (Req 16.5).
+        """
+        gate = self._require_admin(acting_user)
+        if gate is not None:
+            return gate
+
+        order_service = self._order_service or OrderService(self._uow)
+        orders = order_service.list_active_for_seller()
+        return [self._build_seller_order_view(order) for order in orders]
+
+    # --------------------------------------- set_offline_payment_allowed
+    def set_offline_payment_allowed(
+        self,
+        target_customer_ref,
+        enabled: bool,
+        acting_user,
+    ) -> OfflinePaymentResult:
+        """Enable/disable a Customer's Offline_Payment_Allowed flag (Req 17.1/17.2/17.3).
+
+        Gating first (Req 17.2/12.1): a non-Seller is rejected with
+        :class:`~marketplace.domain.results.NotAuthorized` and no change is made.
+        On success delegates entirely to
+        :meth:`marketplace.auth.service.AuthService.set_offline_payment_allowed`,
+        which persists the new flag value and returns the updated
+        :class:`~marketplace.domain.entities.User`. An unknown
+        ``target_customer_ref`` yields :class:`~marketplace.domain.results.NotFound`
+        (Req 17.3).
+
+        Args:
+            target_customer_ref: the Customer identified by internal ``user_id``
+                (UUID), Telegram user id (int), or ``Verified_Contact`` (str).
+            enabled: the new flag value (``True`` enables, ``False`` disables).
+            acting_user: the Telegram user id (int) or :class:`User` performing
+                the action; must be the Seller.
+        """
+        gate = self._require_admin(acting_user)
+        if gate is not None:
+            return gate
+
+        return self._auth.set_offline_payment_allowed(
+            target_customer_ref, enabled, acting_user
+        )
 
     # ------------------------------------------------------------------ internals
+    def _build_seller_order_view(self, order: Order) -> SellerOrderView:
+        """Build a :class:`SellerOrderView` for one order.
+
+        Reads the order's payment record (if any) for the UTR and screenshot key,
+        then computes fulfillability from the current catalog stock via the
+        Fulfillability Engine's pure functions (``is_fulfillable`` /
+        ``shortfalls``). The stock snapshot is built on read so it is never
+        stale (Req 16.1). The flag is informational only and NEVER gates any
+        Seller action (Req 16.5).
+        """
+        payment = self._uow.payments.get_by_order(order.order_id)
+        utr = payment.utr if payment is not None else None
+        screenshot_key = (
+            payment.screenshot_object_key if payment is not None else None
+        )
+
+        snapshot = _stock_snapshot_for_order(self._uow, order)
+        fulfillable = is_fulfillable(order, snapshot)
+        shortfall_list = tuple(_compute_shortfalls(order, snapshot))
+
+        return SellerOrderView(
+            order=order,
+            utr=utr,
+            screenshot_key=screenshot_key,
+            fulfillable=fulfillable,
+            shortfalls=shortfall_list,
+        )
+
     def _require_admin(self, acting_user) -> Optional[NotAuthorized]:
         """Run the Seller gate; return :class:`NotAuthorized` to reject, else ``None``.
 

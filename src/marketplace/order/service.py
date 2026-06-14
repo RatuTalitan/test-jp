@@ -565,6 +565,91 @@ class OrderService:
         self._enqueue_customer_state_change(stored)  # "approved" (Req 7.8)
         return stored
 
+    # ---------------------------------------- offline-payment approval edge
+    def offline_verify(self, order_id, actor: Actor) -> LifecycleResult:
+        """Seller drives the offline-payment path: PAYMENT_PENDING → PAYMENT_VERIFIED → APPROVED (Req 8.9, 17.4-17.8).
+
+        This is the Seller-triggered offline-payment approval path described in
+        Req 8.9 and Req 17.4-17.8. It is **only** valid for orders whose
+        ordering customer has the ``offline_payment_allowed`` flag enabled; a
+        non-flagged customer's order is rejected without state change (Req 17.7).
+
+        Reads the customer's ``offline_payment_allowed`` flag from ``uow.users``
+        and passes it as the guard to the ``OFFLINE_VERIFY`` edge in the state
+        machine (PAYMENT_PENDING → PAYMENT_VERIFIED, Req 8.9). On success,
+        persists PAYMENT_VERIFIED and **immediately cascades into**
+        :meth:`approve` -- exactly as :meth:`verify_payment` does (Req 17.5):
+        the standard stock-guarded PAYMENT_VERIFIED → APPROVED follows.
+
+        **Never auto-approves (Req 17.4):** the Seller explicitly calls this
+        method; :meth:`approve` is a separate, explicit action driven by this
+        cascade, not an automatic one.
+
+        **Audit entry (Req 17.8):** if the order reaches APPROVED *and* no UTR
+        is recorded against it (``uow.payments.get_by_order`` returns ``None``
+        or a payment row with ``utr=None``), appends exactly one
+        :class:`~marketplace.domain.entities.AuditEntry` with
+        ``action=AuditAction.OFFLINE_APPROVAL``. If a UTR exists (the customer
+        optionally submitted one, Req 17.6) the audit entry is **not** written.
+
+        **Non-Seller actor:** the state machine's actor-role check rejects any
+        non-Seller before the guard runs; state is left unchanged.
+
+        **Stock conflict (Req 7.4):** a conflict leaves the order in
+        PAYMENT_VERIFIED, changes no stock, and does not write the audit entry
+        (since approval did not complete).
+
+        Returns:
+            * the **APPROVED** order when the full path succeeds;
+            * a :class:`~marketplace.domain.results.Conflict` (``STOCK_CONFLICT``)
+              when the OFFLINE_VERIFY edge succeeds but approval is blocked by a
+              stock shortfall -- the order stays in PAYMENT_VERIFIED;
+            * a :class:`~marketplace.domain.results.Rejected`
+              (``OFFLINE_PAYMENT_NOT_ALLOWED``) when the customer is not flagged
+              (Req 17.7) -- the order stays in PAYMENT_PENDING;
+            * a :class:`~marketplace.domain.results.NotAuthorized`
+              (``NOT_AUTHORIZED_ACTOR``) when the actor is not the Seller -- the
+              order stays in PAYMENT_PENDING;
+            * a state-preserving failure when the order is not in PAYMENT_PENDING.
+        """
+        order = self._uow.orders.get(order_id)
+        if order is None:
+            return NotFound("order", order_id)
+
+        # Read the ordering customer's offline_payment_allowed flag (Req 8.9/17.5).
+        customer = self._uow.users.get(order.customer_id)
+        offline_allowed = (
+            customer.offline_payment_allowed if customer is not None else False
+        )
+
+        # Attempt PAYMENT_PENDING -> PAYMENT_VERIFIED via the OFFLINE_VERIFY event.
+        # The guard rejects if offline_allowed is False (Req 17.7); the actor-role
+        # check rejects non-Sellers; a wrong starting state yields INVALID_TRANSITION.
+        verified = transition(
+            order,
+            OrderEvent.OFFLINE_VERIFY,
+            actor,
+            Guards(offline_payment_allowed=offline_allowed),
+        )
+        if not isinstance(verified, Order):
+            # Guard or actor check failed: state is left unchanged by the state
+            # machine.  Return the typed failure directly.
+            return verified
+
+        # Persist the PAYMENT_VERIFIED transition, then cascade to the standard
+        # stock-guarded approval (Req 17.5) -- same pattern as verify_payment.
+        self._uow.orders.update(verified)
+        result = self.approve(order_id, actor)
+
+        # Audit entry (Req 17.8): written only when the order reached APPROVED
+        # AND no UTR is recorded against it.
+        if isinstance(result, Order) and result.state is OrderState.APPROVED:
+            payment = self._uow.payments.get_by_order(order_id)
+            if payment is None or payment.utr is None:
+                self._append_offline_approval_audit(result, actor)
+
+        return result
+
     # ------------------------------------------ rejection + fulfillment edges
     def reject_payment(self, order_id, actor: Actor, reason: str) -> LifecycleResult:
         """Seller rejects a submitted payment with a reason (Req 7.5/7.6/7.9).
@@ -959,6 +1044,39 @@ class OrderService:
                 "old_value": None if old_value is None else str(old_value),
                 "new_value": None if new_value is None else str(new_value),
                 "new_total_amount": str(order.total_amount),
+            },
+            acting_user_id=acting_user_id,
+            created_at=datetime.now(timezone.utc),
+        )
+        return self._uow.audit.add(entry)
+
+    def _append_offline_approval_audit(
+        self, order: Order, actor: Actor
+    ) -> AuditEntry:
+        """Append exactly one offline-payment-exception Audit_Trail entry (Req 17.8).
+
+        Written after a successful offline-payment approval (via
+        :meth:`offline_verify`) when **no UTR** is recorded against the order.
+        Records that the order was approved under the offline-payment exception,
+        the acting Seller, and the timestamp.
+
+        When the actor carries no ``user_id`` the configured Seller's id is
+        looked up and recorded in its place (same convention as
+        :meth:`_append_modification_audit`).
+        """
+        acting_user_id = actor.user_id
+        if acting_user_id is None:
+            seller = self._find_seller()
+            acting_user_id = seller.user_id if seller is not None else None
+        entry = AuditEntry(
+            audit_id=new_id(),
+            order_id=order.order_id,
+            action=AuditAction.OFFLINE_APPROVAL,
+            detail={
+                "format_version": 1,
+                "exception": "offline_payment",
+                "order_id": str(order.order_id),
+                "approved_without_utr": True,
             },
             acting_user_id=acting_user_id,
             created_at=datetime.now(timezone.utc),
